@@ -10,7 +10,6 @@
 #include <iostream>
 using namespace std;
 
-#define PI 3.14159
 
 /***************************************************
 **              Globals variables                 **
@@ -53,8 +52,9 @@ public:
   double yRatio;
 
   // constructor - where the round starts
-  EnemyBulletClass(double enemySpin, double enemyGunRotateX, double enemyGunRotateY,  double enemyTankPosX, double enemyTankPosY, double enemyTankPosZ) 
-  {
+  EnemyBulletClass(double enemySpin, double enemyGunRotateX, double enemyGunRotateY,  
+  double enemyTankPosX, double enemyTankPosY, double enemyTankPosZ){
+
 	localxDegree = enemySpin-enemyGunRotateX;
     localyDegree = enemyGunRotateY+90;
     bulletPosX = enemyTankPosX+cos((enemySpin*PI*2)/360)*1; 
@@ -134,7 +134,7 @@ public:
 		enemyTankPosZ = rand()%20;
 	}
 
-  // constructor - when the target is first created
+  //constructor - called when the enemy tank is first created
 	 enemyTank() {
 		randomValues();
 		enemyGunRotateY = 0;
@@ -332,7 +332,7 @@ vector <enemyTank> enemyTanks;
 // create enemy tanks
 void initEnemyTanks() {
   srand(time(NULL));
-  for(int i=0;i<3;i++) {
+  for(int i=0;i<5;i++) {
     enemyTank t;
     enemyTanks.push_back(t);
   }
@@ -919,8 +919,6 @@ void reshape( int w, int h )
 	gluPerspective(90.0, aspect, 1.0, 100.0);
 	glMatrixMode(GL_MODELVIEW);
 
-
-
 }
 
 
@@ -1089,18 +1087,16 @@ void init(void)
 
 	//enable and set up fog
     glEnable(GL_FOG);
-   {
-      GLfloat fogColor[4] = {0.8, 0.8, 0.8, 1.0};
+    GLfloat fogColor[4] = {0.8, 0.8, 0.8, 1.0};
 
-	  static GLint fogMode;
-      fogMode = GL_EXP2;
-      glFogi (GL_FOG_MODE, fogMode);
-      glFogfv (GL_FOG_COLOR, fogColor);
-      glFogf (GL_FOG_DENSITY, 0.04);
-      glHint (GL_FOG_HINT, GL_DONT_CARE);
-      glFogf (GL_FOG_START, 0.0);
-      glFogf (GL_FOG_END, 1.0);
-   }
+	static GLint fogMode;
+    fogMode = GL_EXP2;
+    glFogi (GL_FOG_MODE, fogMode);
+    glFogfv (GL_FOG_COLOR, fogColor);
+    glFogf (GL_FOG_DENSITY, 0.04);
+    glHint (GL_FOG_HINT, GL_DONT_CARE);
+    glFogf (GL_FOG_START, 0.0);
+    glFogf (GL_FOG_END, 1.0);
 
     //initialize the enemy tanks
 	initEnemyTanks();
@@ -1121,8 +1117,8 @@ void mouseMovement(int x, int y) {
 **               main entry point                 **
 ***************************************************/
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv){
+
 	/* initializations */
 	glutInit(&argc, argv);
 	glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH );
